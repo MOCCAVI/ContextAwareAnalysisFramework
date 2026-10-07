@@ -1,0 +1,5 @@
+/.direnv
+/.metadata
+/**/bin/ 
+/**/src-gen/
+/**/target/

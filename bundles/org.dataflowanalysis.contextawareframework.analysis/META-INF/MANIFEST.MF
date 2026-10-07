@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Context Aware Analysis
+Bundle-SymbolicName: org.dataflowanalysis.contextawareframework.analysis
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.dataflowanalysis.contextawareframework.analysis
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: 
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ tools.mdsd.library.standalone.initialization,
+ tools.mdsd.library.standalone.initialization.log4j,
+ org.apache.log4j;bundle-version="1.2.15",
+ org.dataflowanalysis.pcm.extension.dictionary.characterized,
+ org.dataflowanalysis.pcm.extension.dddsl,
+ org.dataflowanalysis.pcm.extension.nodecharacteristics,
+ org.dataflowanalysis.dfd.dataflowdiagram,
+ org.eclipse.xtext;bundle-version="2.30.0"

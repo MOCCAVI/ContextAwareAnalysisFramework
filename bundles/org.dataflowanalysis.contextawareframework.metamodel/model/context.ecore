@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="metamodel" nsURI="https://dataflowanalysis.org/contextawareframework/metamodel"
+    nsPrefix="metamodel">
+  <eClassifiers xsi:type="ecore:EClass" name="Context">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextTypes" upperBound="-1"
+        eType="#//ContextType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextDefinitions" upperBound="-1"
+        eType="#//ContextDefinition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextBindings" upperBound="-1"
+        eType="#//ContextBinding" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextValue" upperBound="-1"
+        eType="#//ContextValue" containment="true" eOpposite="#//ContextValue/contextType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextValue">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextType" lowerBound="1"
+        eType="#//ContextType" eOpposite="#//ContextType/contextValue"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextDefinition" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextType" lowerBound="1"
+        eType="#//ContextType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextBinding">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextDefinition" lowerBound="1"
+        eType="#//ContextDefinition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextValue" lowerBound="1"
+        eType="#//ContextValue"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextBindingPredicates"
+        upperBound="-1" eType="#//ContextBindingPredicate" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextBindingPredicate" abstract="true"/>
+</ecore:EPackage>
