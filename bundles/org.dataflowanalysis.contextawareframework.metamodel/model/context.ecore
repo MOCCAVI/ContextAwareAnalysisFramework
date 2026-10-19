@@ -6,9 +6,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextTypes" upperBound="-1"
         eType="#//ContextType" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextDefinitions" upperBound="-1"
-        eType="#//ContextDefinition" containment="true"/>
+        eType="#//ContextApplication" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextBindings" upperBound="-1"
         eType="#//ContextBinding" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextConstraint" upperBound="-1"
+        eType="#//ContextConstraint" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextType">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextValue" upperBound="-1"
@@ -20,17 +22,58 @@
         eType="#//ContextType" eOpposite="#//ContextType/contextValue"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ContextDefinition" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="ContextApplication" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextType" lowerBound="1"
         eType="#//ContextType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextBinding">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="contextDefinition" lowerBound="1"
-        eType="#//ContextDefinition"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextValue" lowerBound="1"
         eType="#//ContextValue"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextBindingPredicates"
         upperBound="-1" eType="#//ContextBindingPredicate" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ContextBindingPredicate" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextConstraint" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="constraint" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextDependentConstraint" eSuperTypes="#//ContextConstraint">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="requiredContextValue" lowerBound="1"
+        eType="#//ContextValue"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextAwareConstraint" eSuperTypes="#//ContextConstraint"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DFDNodeContextApplication" eSuperTypes="#//ContextApplication">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="ecore:EClass ../../org.dataflowanalysis.dfd.dataflowdiagram/model/dataflowdiagram.ecore#//Node"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DFDDataContextApplication" eSuperTypes="#//ContextApplication">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="behavior" lowerBound="1"
+        eType="ecore:EClass ../../org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore#//Behavior"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pin" lowerBound="1" eType="ecore:EClass ../../org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore#//Pin"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DFDFlowContextApplication" eSuperTypes="#//ContextApplication">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourcePin" lowerBound="1"
+        eType="ecore:EClass ../../org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore#//Pin"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="destinationPin" lowerBound="1"
+        eType="ecore:EClass ../../org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore#//Pin"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AndContextBindingPredicate" eSuperTypes="#//ContextBindingPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextBindingPredicates"
+        lowerBound="2" upperBound="-1" eType="#//ContextBindingPredicate"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeNameContextBindingPredicate" eSuperTypes="#//ContextBindingPredicate">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FlowNameContextBindingPredicate" eSuperTypes="#//ContextBindingPredicate">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataCharacteristicBindingPredicate"
+      eSuperTypes="#//ContextBindingPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataCharacteristic" lowerBound="1"
+        eType="ecore:EClass ../../org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore#//Label"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VertexCharacteristicBindingPredicate"
+      eSuperTypes="#//ContextBindingPredicate">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vertexCharacteristic" lowerBound="1"
+        eType="ecore:EClass ../../org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore#//Label"/>
+  </eClassifiers>
 </ecore:EPackage>
