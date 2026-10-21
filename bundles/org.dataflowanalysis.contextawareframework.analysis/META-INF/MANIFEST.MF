@@ -11,8 +11,9 @@ Require-Bundle:
  tools.mdsd.library.standalone.initialization,
  tools.mdsd.library.standalone.initialization.log4j,
  org.apache.log4j;bundle-version="1.2.15",
- org.dataflowanalysis.pcm.extension.dictionary.characterized,
- org.dataflowanalysis.pcm.extension.dddsl,
- org.dataflowanalysis.pcm.extension.nodecharacteristics,
  org.dataflowanalysis.dfd.dataflowdiagram,
- org.eclipse.xtext;bundle-version="2.30.0"
+ org.dataflowanalysis.dfd.datadictionary,
+ org.eclipse.xtext;bundle-version="2.30.0",
+ org.dataflowanalysis.analysis,
+ org.dataflowanalysis.analysis.dfd,
+ org.dataflowanalysis.contextawareframework.metamodel
