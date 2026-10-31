@@ -11,4 +11,8 @@ Import-Package: org.junit.jupiter.api;version="5.8.1",
 Automatic-Module-Name: org.dataflowanalysis.contextawareframework.analysis.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: tools.mdsd.modelingfoundations.identifier,
- org.apache.log4j;bundle-version="1.2.15"
+ org.apache.log4j;bundle-version="1.2.15",
+ org.dataflowanalysis.contextawareframework.analysis;bundle-version="1.0.0",
+ org.dataflowanalysis.contextawareframework.metamodel;bundle-version="1.0.0",
+ org.dataflowanalysis.analysis.dfd;bundle-version="5.0.0",
+ org.dataflowanalysis.contextawareframework.analysis.testmodels;bundle-version="1.0.0"

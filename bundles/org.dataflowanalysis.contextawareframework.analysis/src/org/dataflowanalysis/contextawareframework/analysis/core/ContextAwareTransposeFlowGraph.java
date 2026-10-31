@@ -7,11 +7,15 @@ import java.util.Map;
 import org.dataflowanalysis.analysis.core.AbstractTransposeFlowGraph;
 import org.dataflowanalysis.analysis.core.AbstractVertex;
 import org.dataflowanalysis.analysis.dfd.core.DFDTransposeFlowGraph;
+import org.dataflowanalysis.analysis.dfd.core.DFDVertex;
+import org.dataflowanalysis.contextawareframework.analysis.context.FlowGraphContext;
 
 public class ContextAwareTransposeFlowGraph extends DFDTransposeFlowGraph {
+    private FlowGraphContext flowGraphContext;
 
-	public ContextAwareTransposeFlowGraph(AbstractVertex<?> sink) {
+	public ContextAwareTransposeFlowGraph(AbstractVertex<?> sink, FlowGraphContext flowGraphContext) {
 		super(sink);
+        this.flowGraphContext = flowGraphContext;
 	}
 	
 	/**
@@ -23,7 +27,7 @@ public class ContextAwareTransposeFlowGraph extends DFDTransposeFlowGraph {
         ContextAwareVertex newSink = ((ContextAwareVertex) sink).copy(new IdentityHashMap<>());
         newSink.unify(new HashSet<>());
         newSink.evaluateDataFlow();
-        return new DFDTransposeFlowGraph(newSink);
+        return new ContextAwareTransposeFlowGraph(newSink, flowGraphContext);
     }
 
     @Override
@@ -32,10 +36,10 @@ public class ContextAwareTransposeFlowGraph extends DFDTransposeFlowGraph {
     }
 
     @Override
-    public AbstractTransposeFlowGraph copy(Map<ContextAwareVertex, ContextAwareVertex> mapping) {
-    	ContextAwareVertex copiedSink = ((ContextAwareVertex) sink).copy(mapping);
+    public AbstractTransposeFlowGraph copy(Map<DFDVertex, DFDVertex> mapping) {
+        ContextAwareVertex copiedSink = ((ContextAwareVertex) sink).copy(mapping);
         copiedSink.unify(new HashSet<>());
-        return new DFDTransposeFlowGraph(copiedSink);
+        return new ContextAwareTransposeFlowGraph(copiedSink, flowGraphContext);
     }
 
 }

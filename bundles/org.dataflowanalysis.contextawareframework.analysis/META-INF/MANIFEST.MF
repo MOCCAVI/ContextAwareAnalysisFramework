@@ -17,3 +17,8 @@ Require-Bundle:
  org.dataflowanalysis.analysis,
  org.dataflowanalysis.analysis.dfd,
  org.dataflowanalysis.contextawareframework.metamodel
+Export-Package: org.dataflowanalysis.contextawareframework.analysis,
+ org.dataflowanalysis.contextawareframework.analysis.context,
+ org.dataflowanalysis.contextawareframework.analysis.core,
+ org.dataflowanalysis.contextawareframework.analysis.resource,
+ org.dataflowanalysis.contextawareframework.analysis.util

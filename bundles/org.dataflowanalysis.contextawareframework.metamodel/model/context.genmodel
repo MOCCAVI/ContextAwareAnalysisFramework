@@ -11,17 +11,18 @@
     reflectiveDelegation="true" codeFormatting="true" testSuiteClass="org.dataflowanalysis.contextawareframework.metamodel.tests.ContextAllTests"
     importerID="org.eclipse.emf.importer.ecore" featureDelegation="Reflective" complianceLevel="5.0"
     copyrightFields="false" editPluginID="org.dataflowanalysis.contextawareframework.metamodel.edit"
-    editorPluginID="org.dataflowanalysis.contextawareframework.metamodel.editor" usedGenPackages="../../tools.mdsd.modelingfoundations.identifier/model/identifier.genmodel#//identifier"
+    editorPluginID="org.dataflowanalysis.contextawareframework.metamodel.editor" usedGenPackages="../../tools.mdsd.modelingfoundations.identifier/model/identifier.genmodel#//identifier ../../org.dataflowanalysis.dfd.dataflowdiagram/model/dataflowdiagram.genmodel#//dataflowdiagram ../../org.dataflowanalysis.dfd.datadictionary/model/datadictionary.genmodel#//datadictionary"
     operationReflection="true" importOrganizing="true">
   <foreignModel>context.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
-  <genPackages prefix="metamodel" basePackage="org.dataflowanalysis.contextawareframework.metamodel"
+  <genPackages prefix="Context" basePackage="org.dataflowanalysis.contextawareframework.metamodel"
       disposableProviderFactory="true" extensibleProviderFactory="true" childCreationExtenders="true"
       fileExtensions="context" ecorePackage="context.ecore#/">
     <genClasses ecoreClass="context.ecore#//Context">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference context.ecore#//Context/contextTypes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference context.ecore#//Context/contextDefinitions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference context.ecore#//Context/contextBindings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference context.ecore#//Context/contextRequirements"/>
     </genClasses>
     <genClasses ecoreClass="context.ecore#//ContextType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference context.ecore#//ContextType/contextValue"/>
@@ -30,15 +31,48 @@
     <genClasses ecoreClass="context.ecore#//ContextValue">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference context.ecore#//ContextValue/contextType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute context.ecore#//ContextValue/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//ContextValue/contextBinding"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="context.ecore#//ContextDefinition">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//ContextDefinition/contextType"/>
+    <genClasses image="false" ecoreClass="context.ecore#//ContextApplication">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//ContextApplication/contextType"/>
     </genClasses>
     <genClasses ecoreClass="context.ecore#//ContextBinding">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//ContextBinding/contextDefinition"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//ContextBinding/contextValue"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference context.ecore#//ContextBinding/contextBindingPredicates"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//ContextBinding/contextValue"/>
     </genClasses>
     <genClasses image="false" ecoreClass="context.ecore#//ContextBindingPredicate"/>
+    <genClasses image="false" ecoreClass="context.ecore#//ContextRequirement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute context.ecore#//ContextRequirement/requirement"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//DFDNodeContextApplication">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//DFDNodeContextApplication/node"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//DFDDataContextApplication">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//DFDDataContextApplication/behavior"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//DFDDataContextApplication/pin"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//DFDFlowContextApplication">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//DFDFlowContextApplication/sourcePin"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//DFDFlowContextApplication/destinationPin"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//AndContextBindingPredicate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//AndContextBindingPredicate/contextBindingPredicates"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//NodeNameContextBindingPredicate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute context.ecore#//NodeNameContextBindingPredicate/name"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//FlowNameContextBindingPredicate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute context.ecore#//FlowNameContextBindingPredicate/name"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//DataCharacteristicBindingPredicate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//DataCharacteristicBindingPredicate/dataCharacteristic"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//VertexCharacteristicBindingPredicate">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//VertexCharacteristicBindingPredicate/vertexCharacteristic"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//ContextDependentConstraint">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference context.ecore#//ContextDependentConstraint/requiredContextValues"/>
+    </genClasses>
+    <genClasses ecoreClass="context.ecore#//ContextAwareConstraint"/>
   </genPackages>
 </genmodel:GenModel>

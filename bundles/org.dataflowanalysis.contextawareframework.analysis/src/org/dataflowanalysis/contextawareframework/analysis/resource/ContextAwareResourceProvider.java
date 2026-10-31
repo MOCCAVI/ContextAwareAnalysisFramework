@@ -1,8 +1,8 @@
 package org.dataflowanalysis.contextawareframework.analysis.resource;
 
 import org.dataflowanalysis.analysis.dfd.resource.DFDResourceProvider;
-import org.dataflowanalysis.contextawareframework.metamodel.metamodel.Context;
-import org.dataflowanalysis.contextawareframework.metamodel.metamodel.metamodelPackage;
+import org.dataflowanalysis.contextawareframework.metamodel.Context.ContextPackage;
+import org.dataflowanalysis.contextawareframework.metamodel.Context.Context;
 import org.dataflowanalysis.dfd.datadictionary.DataDictionary;
 import org.dataflowanalysis.dfd.datadictionary.datadictionaryPackage;
 import org.dataflowanalysis.dfd.dataflowdiagram.DataFlowDiagram;
@@ -25,10 +25,10 @@ public abstract class ContextAwareResourceProvider extends DFDResourceProvider {
 	                .getExtensionToFactoryMap()
 	                .put(datadictionaryPackage.eNAME, new XMIResourceFactoryImpl());
 	        this.resources.getPackageRegistry()
-	        		.put(metamodelPackage.eNS_URI, metamodelPackage.eINSTANCE);
+	        		.put(ContextPackage.eNS_URI, ContextPackage.eINSTANCE);
 	        this.resources.getResourceFactoryRegistry()
 	        		.getExtensionToFactoryMap()
-	        		.put(metamodelPackage.eNAME, new XMIResourceFactoryImpl());
+	        		.put(ContextPackage.eNAME, new XMIResourceFactoryImpl());
 	    }
 
 	    /**

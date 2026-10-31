@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.dataflowanalysis.analysis.utils.LoggerManager;
-import org.dataflowanalysis.contextawareframework.metamodel.metamodel.Context;
+import org.dataflowanalysis.contextawareframework.metamodel.Context.Context;
 import org.dataflowanalysis.dfd.datadictionary.DataDictionary;
 import org.dataflowanalysis.dfd.dataflowdiagram.DataFlowDiagram;
 import org.eclipse.emf.common.util.URI;

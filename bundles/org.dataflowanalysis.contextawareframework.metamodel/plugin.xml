@@ -10,7 +10,7 @@
       <!-- @generated context -->
       <package
             uri="https://dataflowanalysis.org/contextawareframework/metamodel"
-            class="org.dataflowanalysis.contextawareframework.metamodel.metamodel.metamodelPackage"
+            class="org.dataflowanalysis.contextawareframework.metamodel.Context.ContextPackage"
             genModel="model/context.genmodel"/>
    </extension>
 

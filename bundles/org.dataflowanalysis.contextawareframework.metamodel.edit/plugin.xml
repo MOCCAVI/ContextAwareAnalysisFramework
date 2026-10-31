@@ -10,7 +10,7 @@
       <!-- @generated context -->
       <factory
             uri="https://dataflowanalysis.org/contextawareframework/metamodel"
-            class="org.dataflowanalysis.contextawareframework.metamodel.metamodel.provider.metamodelItemProviderAdapterFactory"
+            class="org.dataflowanalysis.contextawareframework.metamodel.Context.provider.ContextItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider

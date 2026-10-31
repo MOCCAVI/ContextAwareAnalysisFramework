@@ -15,8 +15,16 @@ public class ContextAwareFlowGraphCollection extends DFDFlowGraphCollection {
     	super();
     	super.initialize(resourceProvider);
     }
-    
-	/**
+
+    /**
+     * TODO: Implement design search
+     * @return
+     */
+    public ContextAwareFlowGraphCollection exploreContext() {
+        return this;
+    }
+
+    /**
      * Find a list of transpose flow graphs that are contained in the model provided by the given resource provider
      * @return Returns a list of (unevaluated) transpose flow graphs
      */

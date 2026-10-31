@@ -12,25 +12,26 @@
             id="org.eclipse.emf.ecore.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
-            id="org.dataflowanalysis.contextawareframework.metamodel.metamodel.presentation.metamodelModelWizardID"
-            name="%_UI_metamodelModelWizard_label"
-            class="org.dataflowanalysis.contextawareframework.metamodel.metamodel.presentation.metamodelModelWizard"
+            id="org.dataflowanalysis.contextawareframework.metamodel.Context.presentation.ContextModelWizardID"
+            name="%_UI_ContextModelWizard_label"
+            class="org.dataflowanalysis.contextawareframework.metamodel.Context.presentation.ContextModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/metamodelModelFile.gif">
-         <description>%_UI_metamodelModelWizard_description</description>
+            icon="icons/full/obj16/ContextModelFile.gif">
+         <description>%_UI_ContextModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
    </extension>
 
+
    <extension point="org.eclipse.ui.editors">
       <!-- @generated context -->
       <editor
-            id="org.dataflowanalysis.contextawareframework.metamodel.metamodel.presentation.metamodelEditorID"
-            name="%_UI_metamodelEditor_label"
-            icon="icons/full/obj16/metamodelModelFile.gif"
+            id="org.dataflowanalysis.contextawareframework.metamodel.Context.presentation.ContextEditorID"
+            name="%_UI_ContextEditor_label"
+            icon="icons/full/obj16/ContextModelFile.gif"
             extensions="context"
-            class="org.dataflowanalysis.contextawareframework.metamodel.metamodel.presentation.metamodelEditor"
-            contributorClass="org.dataflowanalysis.contextawareframework.metamodel.metamodel.presentation.metamodelActionBarContributor">
+            class="org.dataflowanalysis.contextawareframework.metamodel.Context.presentation.ContextEditor"
+            contributorClass="org.dataflowanalysis.contextawareframework.metamodel.Context.presentation.ContextActionBarContributor">
       </editor>
    </extension>
 </plugin>

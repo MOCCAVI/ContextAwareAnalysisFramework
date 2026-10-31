@@ -25,7 +25,7 @@ public class ContextAwareDataFlowAnalysis extends DFDConfidentialityAnalysis {
 	}
 	
 	@Override
-	public DFDFlowGraphCollection findFlowGraphs() {
+	public ContextAwareFlowGraphCollection findFlowGraphs() {
 		return new ContextAwareFlowGraphCollection(this.getResourceProvider());
 	}
 }
