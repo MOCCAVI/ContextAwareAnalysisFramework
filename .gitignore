@@ -1,7 +1,75 @@
-/.direnv
-/.metadata
-/**/bin/ 
-/**/src-gen/
-/**/target/
-/.idea
+# General
+.DS_Store
+.polyglot.build.properties
+*.log
+*.META-INF_MANIFEST.MF
+*.polyglot.*
+*.rej
+*.takari_issue_192
+*.tycho
+*~
+heapdump.*
+Snap.*
+
+# Package Files
+*.ear
+*.nar
+*.rar
+*.tar.gz
+*.war
+*.zip
+
+# Eclipse
+.classpath
+.project
+.settings/
+.loadpath
+.metadata
+.recommenders
+.worksheet
+*.bak
+*.class
+*.swp
+*.tmp
+*~.nib
+bin/
+javacore.*
+local.properties
+# src-gen/
+tmp/
+.eclipse-pmd
+.checkstyle
+org.eclipse.m2e.core.prefs
+
+# EMF/MWE2 codegen byproducts for the three model bundles.
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/plugin.xml
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/plugin.properties
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/build.properties
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/META-INF/
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/icons/
+
+# Maven
+.mvn/timing.properties
+buildNumber.properties
+dependency-reduced-pom.xml
+pom.xml.next
+pom.xml.releaseBackup
+pom.xml.tag
+pom.xml.versionsBackup
+release.properties
+releng/*/workspace/*
+target/
+
+# Xtend
+*._trace
+*.xtendbin
+xtend-gen/
+
+# JDT
+*.jdt
+
+# IntelliJ
+.idea/
+/out
 *.iml
+/.direnv
