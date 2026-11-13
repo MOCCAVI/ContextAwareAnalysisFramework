@@ -1,0 +1,61 @@
+module org.dataflowanalysis.contextawareframework.mwe2.generate_context_edit
+
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import tools.mdsd.ecoreworkflow.mwe2lib.bean.EclipseRCPSupportingStandaloneSetup
+import tools.mdsd.ecoreworkflow.mwe2lib.component.*
+
+var workspaceRoot = "."
+
+var dfdDataDictionaryGenModelUri = "UNSET-dfdDataDictionaryGenModelUri"
+var dfdDataFlowDiagramGenModelUri = "UNSET-dfdDataFlowDiagramGenModelUri"
+var dfdDataDictionaryEcoreUri = "UNSET-dfdDataDictionaryEcoreUri"
+var dfdDataFlowDiagramEcoreUri = "UNSET-dfdDataFlowDiagramEcoreUri"
+
+Workflow {
+	bean = EclipseRCPSupportingStandaloneSetup {
+		scanClassPath = true
+		platformUri = workspaceRoot
+
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel" path = "bundles/org.dataflowanalysis.contextawareframework.metamodel" }
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel.edit" path = "bundles/org.dataflowanalysis.contextawareframework.metamodel.edit" }
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel.editor" path = "bundles/org.dataflowanalysis.contextawareframework.metamodel.editor" }
+
+		uriMap = {
+			from = "platform:/plugin/tools.mdsd.modelingfoundations.identifier/model/identifier.genmodel"
+			to = "platform:/resource/tools.mdsd.modelingfoundations.identifier/model/identifier.genmodel"
+		}
+		uriMap = {
+			from = "platform:/plugin/tools.mdsd.modelingfoundations.identifier/model/identifier.ecore"
+			to = "platform:/resource/tools.mdsd.modelingfoundations.identifier/model/identifier.ecore"
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.datadictionary/model/datadictionary.genmodel"
+			to = dfdDataDictionaryGenModelUri
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.dataflowdiagram/model/dataflowdiagram.genmodel"
+			to = dfdDataFlowDiagramGenModelUri
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore"
+			to = dfdDataDictionaryEcoreUri
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.dataflowdiagram/model/dataflowdiagram.ecore"
+			to = dfdDataFlowDiagramEcoreUri
+		}
+
+		registerGenModelFile = dfdDataDictionaryGenModelUri
+		registerGenModelFile = dfdDataFlowDiagramGenModelUri
+	}
+
+	component = EcoreGenerator {
+		generateCustomClasses = false
+		generateModel = false
+		generateEdit = true
+		generateEditor = false
+		genModel = "platform:/resource/org.dataflowanalysis.contextawareframework.metamodel/src/main/resources/model/context.genmodel"
+		srcPath = "platform:/resource/org.dataflowanalysis.contextawareframework.metamodel.edit/target/generated-sources/mwe2"
+	}
+}

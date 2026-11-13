@@ -1,7 +1,14 @@
 /.direnv
 /.metadata
-/**/bin/ 
+/**/bin/
 /**/src-gen/
 /**/target/
 /.idea
 *.iml
+
+# EMF/MWE2 codegen byproducts for the three metamodels
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/plugin.xml
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/plugin.properties
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/build.properties
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/META-INF/
+bundles/org.dataflowanalysis.contextawareframework.metamodel*/icons/

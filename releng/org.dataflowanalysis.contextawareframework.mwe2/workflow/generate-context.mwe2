@@ -1,0 +1,79 @@
+module org.dataflowanalysis.contextawareframework.mwe2.generate_context
+
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import tools.mdsd.ecoreworkflow.mwe2lib.bean.EclipseRCPSupportingStandaloneSetup
+import tools.mdsd.ecoreworkflow.mwe2lib.component.*
+
+// Invoked by this bundle's own generate-sources execution (see its pom.xml), with the repo
+// root as the working directory -- Maven's exec-maven-plugin workingDirectory is pinned there.
+var workspaceRoot = "."
+
+// DataFlowAnalysis's dataflowdiagram/datadictionary genmodels (referenced by context.genmodel's
+// usedGenPackages) live in a separate Maven reactor/repo, so there is no sibling source
+// directory to projectMapping onto like DataFlowAnalysis does for its own sibling bundles.
+// Instead these are resolved straight out of the resolved dependency jars via EMF's archive:
+// URI scheme; the full archive: URIs are injected from this bundle's pom.xml (maven-dependency-
+// plugin resolves the jar paths). Note: this workflow must be launched via exec-maven-plugin's
+// `java` goal (in-process), not `exec` (external process) -- exec silently drops everything
+// after "!" in a -p value when it reconstructs the OS command line.
+var dfdDataDictionaryGenModelUri = "UNSET-dfdDataDictionaryGenModelUri"
+var dfdDataFlowDiagramGenModelUri = "UNSET-dfdDataFlowDiagramGenModelUri"
+var dfdDataDictionaryEcoreUri = "UNSET-dfdDataDictionaryEcoreUri"
+var dfdDataFlowDiagramEcoreUri = "UNSET-dfdDataFlowDiagramEcoreUri"
+
+Workflow {
+	bean = EclipseRCPSupportingStandaloneSetup {
+		scanClassPath = true
+		platformUri = workspaceRoot
+
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel" path = "bundles/org.dataflowanalysis.contextawareframework.metamodel" }
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel.edit" path = "bundles/org.dataflowanalysis.contextawareframework.metamodel.edit" }
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel.editor" path = "bundles/org.dataflowanalysis.contextawareframework.metamodel.editor" }
+
+		uriMap = {
+			from = "platform:/plugin/tools.mdsd.modelingfoundations.identifier/model/identifier.genmodel"
+			to = "platform:/resource/tools.mdsd.modelingfoundations.identifier/model/identifier.genmodel"
+		}
+		uriMap = {
+			from = "platform:/plugin/tools.mdsd.modelingfoundations.identifier/model/identifier.ecore"
+			to = "platform:/resource/tools.mdsd.modelingfoundations.identifier/model/identifier.ecore"
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.datadictionary/model/datadictionary.genmodel"
+			to = dfdDataDictionaryGenModelUri
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.dataflowdiagram/model/dataflowdiagram.genmodel"
+			to = dfdDataFlowDiagramGenModelUri
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.datadictionary/model/datadictionary.ecore"
+			to = dfdDataDictionaryEcoreUri
+		}
+		uriMap = {
+			from = "platform:/resource/org.dataflowanalysis.dfd.dataflowdiagram/model/dataflowdiagram.ecore"
+			to = dfdDataFlowDiagramEcoreUri
+		}
+
+		// DataFlowAnalysis's own sibling-bundle genmodels get this registration for free (via
+		// this bean's projectMapping scanning); ours are reached only through the uriMap above,
+		// so without registering them explicitly here, EcoreGenerator resolves usedGenPackages
+		// cross-references against a half-initialized GenModel/EPackage registry and fails with
+		// NullPointerExceptions deep in the JET templates.
+		registerGenModelFile = dfdDataDictionaryGenModelUri
+		registerGenModelFile = dfdDataFlowDiagramGenModelUri
+	}
+
+	// Output location comes entirely from the genmodel's own modelDirectory attribute, not from
+	// srcPath below, which EcoreGenerator only uses to detect hand-written "FooCustom.java"
+	// overrides (irrelevant here since generateCustomClasses is false).
+	component = EcoreGenerator {
+		generateCustomClasses = false
+		generateModel = true
+		generateEdit = false
+		generateEditor = false
+		genModel = "platform:/resource/org.dataflowanalysis.contextawareframework.metamodel/src/main/resources/model/context.genmodel"
+		srcPath = "platform:/resource/org.dataflowanalysis.contextawareframework.metamodel/target/generated-sources/mwe2"
+	}
+}
