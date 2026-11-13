@@ -38,15 +38,11 @@
  </properties>
 
  <repositories>
+	<!-- TODO: switch to https://maven.dataflowanalysis.org once DNS is set up -->
 	<repository>
-		<id>github</id>
-		<name>DataFlowAnalysis GitHub Packages</name>
-		<url>https://maven.pkg.github.com/DataFlowAnalysis/DataFlowAnalysis</url>
-	</repository>
-	<repository>
-		<id>github-vendor</id>
-		<name>DataFlowAnalysisVendor GitHub Packages</name>
-		<url>https://maven.pkg.github.com/DataFlowAnalysis/DataFlowAnalysisVendor</url>
+		<id>dataflowanalysis</id>
+		<name>DataFlowAnalysis Maven Repository</name>
+		<url>https://dataflowanalysis.github.io/maven</url>
 	</repository>
  </repositories>
 
@@ -158,7 +154,6 @@
 			<version>${junit.version}</version>
 		</dependency>
 
-		<!-- EMF/MWE2 codegen toolchain -->
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.mwe.utils</artifactId>
@@ -190,7 +185,6 @@
 			<version>${mwe2.version}</version>
 		</dependency>
 
-		<!-- DataFlowAnalysis, resolved from GitHub Packages (see <repositories> above) -->
 		<dependency>
 			<groupId>${dfa.groupId}</groupId>
 			<artifactId>dfd.datadictionary</artifactId>
@@ -222,7 +216,6 @@
 			<version>${dfa.version}</version>
 		</dependency>
 
-		<!-- DataFlowAnalysis's vendored P2-only dependencies, also published via GitHub Packages -->
 		<dependency>
 			<groupId>${vendor.groupId}</groupId>
 			<artifactId>tools.mdsd.modelingfoundations.identifier</artifactId>
@@ -273,22 +266,148 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>3.6.0</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.6.1</version>
+				<executions>
+					<execution>
+						<id>add-generated-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/mwe2</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>generate-model-code</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
+							<classpathScope>compile</classpathScope>
+							<includePluginDependencies>true</includePluginDependencies>
+							<cleanupDaemonThreads>false</cleanupDaemonThreads>
+							<executable>${java.home}/bin/java</executable>
+							<arguments>
+								<argument>${project.basedir}/workflow/generate.mwe2</argument>
+								<argument>-p</argument>
+								<argument>workspaceRoot=${project.basedir}</argument>
+								<argument>-p</argument>
+								<argument>metamodelPath=${project.basedir}/../org.dataflowanalysis.contextawareframework.metamodel</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.common</artifactId>
+						<version>2.46.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.mwe.utils</artifactId>
+						<version>${mwe.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.mwe.core</artifactId>
+						<version>${mwe.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.mwe2.launch</artifactId>
+						<version>${mwe2.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.mwe2.lib</artifactId>
+						<version>${mwe2.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.mwe2.language</artifactId>
+						<version>${mwe2.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.mwe2.runtime</artifactId>
+						<version>${mwe2.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.xtext</groupId>
+						<artifactId>org.eclipse.xtext</artifactId>
+						<version>${xtext.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.xtext</groupId>
+						<artifactId>org.eclipse.xtext.xbase</artifactId>
+						<version>${xtext.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.emf</groupId>
+						<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+						<version>${emf.codegen.ecore.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+						<version>${log4j.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>1.0.0</version>
 				<configuration>
-					<executable>java</executable>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>org.codehaus.mojo</groupId>
+									<artifactId>exec-maven-plugin</artifactId>
+									<versionRange>[1.0.0,)</versionRange>
+									<goals>
+										<goal>java</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<execute>
+										<runOnIncremental>true</runOnIncremental>
+										<runOnConfiguration>true</runOnConfiguration>
+									</execute>
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
 				</configuration>
 			</plugin>
 		</plugins>
 	</pluginManagement>
+	<resources>
+		<resource>
+			<directory>${project.basedir}/src/main/resources</directory>
+		</resource>
+		<resource>
+			<directory>${project.basedir}</directory>
+			<includes>
+				<include>META-INF/MANIFEST.MF</include>
+				<include>plugin.xml</include>
+				<include>plugin.properties</include>
+			</includes>
+		</resource>
+	</resources>
 	<plugins>
 		<plugin>
 			<groupId>com.diffplug.spotless</groupId>

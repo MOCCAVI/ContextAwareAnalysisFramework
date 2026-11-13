@@ -1,0 +1,26 @@
+module org.dataflowanalysis.contextawareframework.metamodel.edit.workflow.generate
+
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+
+var workspaceRoot = "UNSET-workspaceRoot"
+var metamodelPath = "UNSET-metamodelPath"
+
+Workflow {
+	bean = StandaloneSetup {
+		scanClassPath = true
+		platformUri = workspaceRoot
+
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel.edit" path = workspaceRoot }
+		projectMapping = { projectName = "org.dataflowanalysis.contextawareframework.metamodel" path = metamodelPath }
+	}
+
+	component = EcoreGenerator {
+		generateCustomClasses = false
+		generateModel = false
+		generateEdit = true
+		generateEditor = false
+		genModel = "platform:/resource/org.dataflowanalysis.contextawareframework.metamodel/src/main/resources/model/context.genmodel"
+		srcPath = "platform:/resource/org.dataflowanalysis.contextawareframework.metamodel.edit/target/generated-sources/mwe2"
+	}
+}
