@@ -12,6 +12,7 @@ import org.dataflowanalysis.contextawareframework.analysis.util.ContextUtils;
 import org.dataflowanalysis.contextawareframework.metamodel.Context.ContextApplication;
 import org.dataflowanalysis.contextawareframework.metamodel.Context.ContextType;
 import org.dataflowanalysis.contextawareframework.metamodel.Context.ContextValue;
+import org.dataflowanalysis.contextawareframework.metamodel.Context.DFDDataContextApplication;
 import org.dataflowanalysis.contextawareframework.metamodel.Context.DFDNodeContextApplication;
 
 public class VertexContext {
@@ -48,11 +49,29 @@ public class VertexContext {
     }
 
     /**
-     * TODO: Evaluate data characteristics
-     * @return
+     * Evaluates the data characteristics added by the context to the given vertex
+     * @param vertex Vertex to which the context is applied
+     * @return Returns a list of data characteristics that are added to the output pin of the vertex
      */
     public List<DataCharacteristic> getDataCharacteristics(ContextAwareVertex vertex) {
-        return List.of();
+        List<DataCharacteristic> addedCharacteristics = new ArrayList<>();
+        List<DFDDataContextApplication> dataContextApplications = appliedContext.parallelStream()
+                .filter(DFDDataContextApplication.class::isInstance)
+                .map(DFDDataContextApplication.class::cast)
+                .toList();
+        List<ContextType> contextTypes = dataContextApplications.parallelStream()
+                .map(ContextApplication::getContextType)
+                .toList();
+        Map<ContextType, List<ContextValue>> evaluatedContext = contextUtils.evaluateContext(contextTypes, vertex);
+        for (DFDDataContextApplication dataContextApplication : dataContextApplications) {
+            List<CharacteristicValue> characteristics = new ArrayList<>();
+            evaluatedContext.get(dataContextApplication.getContextType())
+                    .forEach(it -> {
+                        characteristics.add(new DFDCharacteristicValue(contextUtils.getLabelType(it.getContextType()), contextUtils.getLabel(it)));
+                    });
+            addedCharacteristics.add(new DataCharacteristic(dataContextApplication.getPin().getEntityName(), characteristics));
+        }
+        return addedCharacteristics;
     }
 
     public List<ContextApplication> getAppliedContext() {
