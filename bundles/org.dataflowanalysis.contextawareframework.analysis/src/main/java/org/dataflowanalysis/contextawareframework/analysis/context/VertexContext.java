@@ -69,7 +69,7 @@ public class VertexContext {
                     .forEach(it -> {
                         characteristics.add(new DFDCharacteristicValue(contextUtils.getLabelType(it.getContextType()), contextUtils.getLabel(it)));
                     });
-            addedCharacteristics.add(new DataCharacteristic(dataContextApplication.getPin().getEntityName(), characteristics));
+            addedCharacteristics.add(new DataCharacteristic(dataContextApplication.getPin().getId(), characteristics));
         }
         return addedCharacteristics;
     }
