@@ -29,7 +29,7 @@ import org.dataflowanalysis.dfd.datadictionary.LabelType;
 import org.dataflowanalysis.dfd.datadictionary.datadictionaryFactory;
 
 public class ContextUtils {
-    private ContextAwareResourceProvider resourceProvider;
+    private final ContextAwareResourceProvider resourceProvider;
 
     public ContextUtils(ContextAwareResourceProvider resourceProvider) {
         this.resourceProvider = resourceProvider;
@@ -44,66 +44,59 @@ public class ContextUtils {
     }
 
     public boolean isApplicable(ContextApplication contextApplication, DFDVertex vertex) {
-        if (contextApplication instanceof DFDDataContextApplication dataContextApplication) {
-            return vertex.getReferencedElement()
+        return switch (contextApplication) {
+            case DFDDataContextApplication dataContextApplication -> vertex.getReferencedElement()
                     .getBehavior()
-                    .equals(dataContextApplication.getBehavior())
-                    && vertex.getReferencedElement()
-                            .getBehavior()
-                            .getOutPin()
-                            .contains(dataContextApplication.getPin());
-        } else if (contextApplication instanceof DFDNodeContextApplication nodeContextApplication) {
-            return vertex.getReferencedElement()
-                    .equals(nodeContextApplication.getNode());
-        } else if (contextApplication instanceof DFDFlowContextApplication flowContextApplication) {
-            return vertex.getReferencedElement()
+                    .equals(dataContextApplication.getBehavior()) && vertex.getReferencedElement()
                     .getBehavior()
                     .getOutPin()
-                    .contains(flowContextApplication.getSourcePin())
-                    && resourceProvider.getDataFlowDiagram()
-                            .getFlows()
-                            .parallelStream()
-                            .filter(it -> it.getSourcePin()
-                                    .equals(flowContextApplication.getSourcePin()))
-                            .anyMatch(it -> it.getDestinationPin()
-                                    .equals(flowContextApplication.getDestinationPin()));
-        } else {
-            throw new UnsupportedOperationException("Unknown context application");
-        }
+                    .contains(dataContextApplication.getPin());
+            case DFDNodeContextApplication nodeContextApplication -> vertex.getReferencedElement()
+                    .equals(nodeContextApplication.getNode());
+            case DFDFlowContextApplication flowContextApplication -> vertex.getReferencedElement()
+                    .getBehavior()
+                    .getOutPin()
+                    .contains(flowContextApplication.getSourcePin()) && resourceProvider.getDataFlowDiagram()
+                    .getFlows()
+                    .parallelStream()
+                    .filter(it -> it.getSourcePin()
+                            .equals(flowContextApplication.getSourcePin()))
+                    .anyMatch(it -> it.getDestinationPin()
+                            .equals(flowContextApplication.getDestinationPin()));
+            case null, default -> throw new UnsupportedOperationException("Unknown context application");
+        };
     }
 
     public boolean isApplicable(ContextBindingPredicate predicate, ContextAwareVertex vertex) {
-        if (predicate instanceof AndContextBindingPredicate andContextBindingPredicate) {
-            return andContextBindingPredicate.getContextBindingPredicates()
-                    .stream()
-                    .allMatch(it -> isApplicable(it, vertex));
-        } else if (predicate instanceof DataCharacteristicBindingPredicate dataCharacteristicBindingPredicate) {
-            return vertex.getAllDataCharacteristics()
-                    .stream()
-                    .map(DataCharacteristic::getAllCharacteristics)
-                    .flatMap(List::stream)
-                    .anyMatch(it -> it.getValueName()
-                            .equalsIgnoreCase(dataCharacteristicBindingPredicate.getDataCharacteristic()
-                                    .getEntityName()));
-        } else if (predicate instanceof FlowNameContextBindingPredicate flowNameContextBindingPredicate) {
-            return vertex.getPinFlowMap()
+        return switch (predicate) {
+            case AndContextBindingPredicate andContextBindingPredicate ->
+                    andContextBindingPredicate.getContextBindingPredicates()
+                            .stream()
+                            .allMatch(it -> isApplicable(it, vertex));
+            case DataCharacteristicBindingPredicate dataCharacteristicBindingPredicate ->
+                    vertex.getAllDataCharacteristics()
+                            .stream()
+                            .map(DataCharacteristic::getAllCharacteristics)
+                            .flatMap(List::stream)
+                            .anyMatch(it -> it.getValueName()
+                                    .equalsIgnoreCase(dataCharacteristicBindingPredicate.getDataCharacteristic()
+                                            .getEntityName()));
+            case FlowNameContextBindingPredicate flowNameContextBindingPredicate -> vertex.getPinFlowMap()
                     .values()
                     .stream()
                     .anyMatch(it -> it.getEntityName()
                             .equalsIgnoreCase(flowNameContextBindingPredicate.getName()));
-        } else if (predicate instanceof NodeNameContextBindingPredicate nodeNameContextBindingPredicate) {
-            return vertex.getReferencedElement()
+            case NodeNameContextBindingPredicate nodeNameContextBindingPredicate -> vertex.getReferencedElement()
                     .getEntityName()
                     .equalsIgnoreCase(nodeNameContextBindingPredicate.getName());
-        } else if (predicate instanceof VertexCharacteristicBindingPredicate vertexCharacteristicBindingPredicate) {
-            return vertex.getAllVertexCharacteristics()
-                    .stream()
-                    .anyMatch(it -> it.getValueName()
-                            .equalsIgnoreCase(vertexCharacteristicBindingPredicate.getVertexCharacteristic()
-                                    .getEntityName()));
-        } else {
-            throw new UnsupportedOperationException("Unknown context binding predicate");
-        }
+            case VertexCharacteristicBindingPredicate vertexCharacteristicBindingPredicate ->
+                    vertex.getAllVertexCharacteristics()
+                            .stream()
+                            .anyMatch(it -> it.getValueName()
+                                    .equalsIgnoreCase(vertexCharacteristicBindingPredicate.getVertexCharacteristic()
+                                            .getEntityName()));
+            case null, default -> throw new UnsupportedOperationException("Unknown context binding predicate");
+        };
     }
 
     public Map<ContextType, List<ContextValue>> evaluateContext(List<ContextType> contextTypes,
