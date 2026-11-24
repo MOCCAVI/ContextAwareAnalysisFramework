@@ -1,7 +1,9 @@
 package org.dataflowanalysis.contextawareframework.analysis.core;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 import org.dataflowanalysis.analysis.dfd.core.DFDVertex;
 import org.dataflowanalysis.contextawareframework.analysis.context.VertexContext;
 import org.dataflowanalysis.dfd.datadictionary.Pin;
@@ -19,12 +21,24 @@ public class ContextAwareVertex extends DFDVertex {
 
     @Override
     public void evaluateDataFlow() {
-        super.evaluateDataFlow();
+        if (!super.isEvaluated()) {
+            super.evaluateDataFlow();
+            this.vertexCharacteristics.get()
+                    .addAll(vertexContext.getVertexCharacteristics(this));
+            this.outgoingDataCharacteristics.get()
+                    .addAll(vertexContext.getDataCharacteristics(this));
+        }
+    }
 
-        this.vertexCharacteristics.get()
-                .addAll(vertexContext.getVertexCharacteristics(this));
-        this.outgoingDataCharacteristics.get()
-                .addAll(vertexContext.getDataCharacteristics(this));
+    @Override
+    public void evaluateDataFlow(List<Pin> outPinsForOutgoing) {
+        if (!super.isEvaluated()) {
+            super.evaluateDataFlow(outPinsForOutgoing);
+            this.vertexCharacteristics.get()
+                    .addAll(vertexContext.getVertexCharacteristics(this));
+            this.outgoingDataCharacteristics.get()
+                    .addAll(vertexContext.getDataCharacteristics(this));
+        }
     }
 
     /**
