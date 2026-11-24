@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context:Context xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Context="https://dataflowanalysis.org/contextawareframework/metamodel">
+  <contextTypes name="Classification">
+    <contextValue name="Restricted"/>
+  </contextTypes>
+  <contextDefinitions xsi:type="Context:DFDDataContextApplication" contextType="//@contextTypes.0">
+    <behavior href="../default.datadictionary#_jsBswb6EEe6fAKdvyu1GEg"/>
+    <pin href="../default.datadictionary#_5mEiMb6EEe6fAKdvyu1GEg"/>
+  </contextDefinitions>
+  <contextBindings contextValue="//@contextTypes.0/@contextValue.0">
+    <contextBindingPredicates xsi:type="Context:NodeNameContextBindingPredicate" name="User"/>
+  </contextBindings>
+</Context:Context>
