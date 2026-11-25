@@ -1,6 +1,8 @@
 package org.dataflowanalysis.contextawareframework.analysis.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,10 @@ public class ContextAwareVertex extends DFDVertex {
             VertexContext vertexContext) {
         super(node, pinDFDVertexMap, pinFlowMap);
         this.vertexContext = vertexContext;
+    }
+
+    public List<ContextAwareVertex> exploreContext() {
+        return vertexContext.computeAlternatives(this);
     }
 
     @Override
@@ -41,6 +47,20 @@ public class ContextAwareVertex extends DFDVertex {
         }
     }
 
+    public ContextAwareVertex copy(Map<DFDVertex, DFDVertex> mapping, VertexContext vertexContext) {
+        Map<Pin, DFDVertex> copiedPinDFDVertexMap = new HashMap<>();
+        this.pinDFDVertexMap.keySet()
+                .forEach(key -> {
+                    var oldVertex = this.pinDFDVertexMap.get(key);
+                    var newVertex = mapping.getOrDefault(oldVertex, this.pinDFDVertexMap.get(key)
+                            .copy(mapping));
+                    copiedPinDFDVertexMap.put(key, newVertex);
+                    mapping.putIfAbsent(oldVertex, newVertex);
+                });
+        return new ContextAwareVertex(this.referencedElement, copiedPinDFDVertexMap, new HashMap<>(this.pinFlowMap),
+                vertexContext);
+    }
+
     /**
      * Creates a clone of the vertex without considering data characteristics nor vertex characteristics
      */
@@ -57,5 +77,33 @@ public class ContextAwareVertex extends DFDVertex {
                 });
         return new ContextAwareVertex(this.referencedElement, copiedPinDFDVertexMap, new HashMap<>(this.pinFlowMap),
                 vertexContext);
+    }
+
+    public VertexContext getVertexContext() {
+        return vertexContext;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ContextAwareVertex vertex))
+            return false;
+        if (!this.referencedElement.equals(vertex.getReferencedElement()))
+            return false;
+        if (!this.vertexContext.equals(vertex.getVertexContext()))
+            return false;
+        if (!this.getPinDFDVertexMap()
+                .keySet()
+                .equals(vertex.getPinDFDVertexMap()
+                        .keySet()))
+            return false;
+        for (var key : this.getPinDFDVertexMap()
+                .keySet()) {
+            if (!this.getPinDFDVertexMap()
+                    .get(key)
+                    .equals(vertex.getPinDFDVertexMap()
+                            .get(key)))
+                return false;
+        }
+        return true;
     }
 }
