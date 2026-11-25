@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context:Context xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Context="https://dataflowanalysis.org/contextawareframework/metamodel" xmlns:dataflowdiagram="http://dataflowanalysis.org/dfd/dataflowdiagram">
+  <contextTypes name="Location">
+    <contextValue name="EU"/>
+    <contextValue name="USA"/>
+  </contextTypes>
+  <contextDefinitions xsi:type="Context:DFDNodeContextApplication" contextType="//@contextTypes.0">
+    <node xsi:type="dataflowdiagram:Store" href="../default.dataflowdiagram#_U27Lor6CEe6fAKdvyu1GEg"/>
+  </contextDefinitions>
+  <contextBindings contextValue="//@contextTypes.0/@contextValue.1">
+    <contextBindingPredicates xsi:type="Context:FlowNameContextBindingPredicate" name="data"/>
+  </contextBindings>
+</Context:Context>

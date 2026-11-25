@@ -1,6 +1,9 @@
 package org.dataflowanalysis.contextawareframework.analysis.core;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.log4j.Logger;
 import org.dataflowanalysis.analysis.core.AbstractTransposeFlowGraph;
 import org.dataflowanalysis.analysis.dfd.core.DFDFlowGraphCollection;
@@ -15,12 +18,18 @@ public class ContextAwareFlowGraphCollection extends DFDFlowGraphCollection {
         super.initialize(resourceProvider);
     }
 
-    /**
-     * TODO: Implement design search
-     * @return
-     */
+    public ContextAwareFlowGraphCollection(ContextAwareResourceProvider resourceProvider, List<ContextAwareTransposeFlowGraph> flowGraphs) {
+        super(resourceProvider, flowGraphs);
+    }
+
     public ContextAwareFlowGraphCollection exploreContext() {
-        return this;
+        List<ContextAwareTransposeFlowGraph> exploredFlowGraphs = this.getTransposeFlowGraphs().parallelStream()
+                .filter(ContextAwareTransposeFlowGraph.class::isInstance)
+                .map(ContextAwareTransposeFlowGraph.class::cast)
+                .map(ContextAwareTransposeFlowGraph::exploreContext)
+                .flatMap(List::stream)
+                .toList();
+        return new ContextAwareFlowGraphCollection((ContextAwareResourceProvider) this.resourceProvider, exploredFlowGraphs);
     }
 
     /**

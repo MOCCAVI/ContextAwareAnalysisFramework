@@ -55,7 +55,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AndContextBindingPredicate" eSuperTypes="#//ContextBindingPredicate">
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextBindingPredicates"
-        lowerBound="2" upperBound="-1" eType="#//ContextBindingPredicate"/>
+        lowerBound="2" upperBound="-1" eType="#//ContextBindingPredicate" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeNameContextBindingPredicate" eSuperTypes="#//ContextBindingPredicate">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
